@@ -1,7 +1,7 @@
 {
   "name": "open-project",
   "displayName": "Open Project",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Quickly open projects in VS Code",
   "categories": [
     "Other"
