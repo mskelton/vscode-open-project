@@ -35,7 +35,8 @@
     "typescript": "^5.8.3"
   },
   "activationEvents": [
-    "onCommand:open-project.open"
+    "onCommand:open-project.open",
+    "onCommand:open-project.open-in-new-window"
   ],
   "icon": "resources/icon.png",
   "engines": {
