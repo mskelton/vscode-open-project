@@ -52,24 +52,64 @@ async function selectProject(args: { cwd: string }): Promise<string | undefined>
 
   try {
     const entries = await fs.readdir(cwd, { withFileTypes: true })
-    const folders = entries
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => ({
-        label: entry.name,
-        path: path.join(cwd, entry.name),
-      }))
+    const items: (vscode.QuickPickItem & { path: string })[] = []
 
-    if (folders.length === 0) {
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue
+      }
+
+      // Bare repo with worktrees - include subdirectories (excluding git internals)
+      if (entry.name.endsWith('.git')) {
+        const worktrees = await getWorktrees(path.join(cwd, entry.name))
+
+        for (const worktree of worktrees) {
+          items.push({
+            description: entry.name,
+            label: worktree,
+            path: path.join(cwd, entry.name, worktree),
+          })
+        }
+      } else {
+        items.push({
+          label: entry.name,
+          path: path.join(cwd, entry.name),
+        })
+      }
+    }
+
+    if (items.length === 0) {
       vscode.window.showWarningMessage(`Open Project: No projects found in ${cwd}`)
       return
     }
 
-    const selected = await vscode.window.showQuickPick(folders, {
+    const selected = await vscode.window.showQuickPick(items, {
       placeHolder: 'Select a project to open',
     })
 
     return selected?.path
   } catch (error) {
     vscode.window.showErrorMessage(`Open Project: Error reading directory: ${error}`)
+  }
+}
+
+const GIT_INTERNAL_DIRS = new Set([
+  'branches',
+  'hooks',
+  'info',
+  'logs',
+  'objects',
+  'refs',
+  'worktrees',
+])
+
+async function getWorktrees(repoPath: string): Promise<string[]> {
+  try {
+    const entries = await fs.readdir(repoPath, { withFileTypes: true })
+    return entries
+      .filter((entry) => entry.isDirectory() && !GIT_INTERNAL_DIRS.has(entry.name))
+      .map((entry) => entry.name)
+  } catch {
+    return []
   }
 }
