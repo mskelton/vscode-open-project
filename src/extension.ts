@@ -17,9 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         await fs.stat(cwd)
       } catch {
-        vscode.window.showErrorMessage(
-          `Open Project: specified path does not exist: ${cwd}`,
-        )
+        vscode.window.showErrorMessage(`Open Project: specified path does not exist: ${cwd}`)
         return
       }
 
@@ -33,9 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
           }))
 
         if (folders.length === 0) {
-          vscode.window.showWarningMessage(
-            `Open Project: No projects found in ${cwd}`,
-          )
+          vscode.window.showWarningMessage(`Open Project: No projects found in ${cwd}`)
           return
         }
 
@@ -44,15 +40,10 @@ export function activate(context: vscode.ExtensionContext) {
         })
 
         if (selected) {
-          await vscode.commands.executeCommand(
-            'vscode.openFolder',
-            vscode.Uri.file(selected.path),
-          )
+          await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(selected.path))
         }
       } catch (error) {
-        vscode.window.showErrorMessage(
-          `Open Project: Error reading directory: ${error}`,
-        )
+        vscode.window.showErrorMessage(`Open Project: Error reading directory: ${error}`)
       }
     },
   )

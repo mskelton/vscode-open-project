@@ -1,44 +1,44 @@
 {
   "name": "open-project",
   "displayName": "Open Project",
-  "description": "Quickly open projects in VS Code",
   "version": "1.0.1",
+  "description": "Quickly open projects in VS Code",
+  "categories": [
+    "Other"
+  ],
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/mskelton/vscode-open-project"
   },
-  "license": "ISC",
   "publisher": "mskelton",
-  "engines": {
-    "vscode": "^1.60.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:open-project.open"
+  "files": [
+    "LICENSE",
+    "out/**/*",
+    "resources/**/*"
   ],
   "main": "./out/extension.js",
-  "icon": "resources/icon.png",
-  "files": [
-    "out/**/*",
-    "resources/**/*",
-    "LICENSE"
-  ],
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "eslint .",
-    "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check ."
   },
   "devDependencies": {
     "@mskelton/eslint-config": "^9.2.0",
     "@types/node": "^22.15.17",
     "@types/vscode": "^1.60.0",
     "eslint": "^9.29.0",
-    "prettier": "^3.5.3",
+    "oxfmt": "^0.24.0",
     "typescript": "^5.8.3"
+  },
+  "activationEvents": [
+    "onCommand:open-project.open"
+  ],
+  "icon": "resources/icon.png",
+  "engines": {
+    "vscode": "^1.60.0"
   }
 }
