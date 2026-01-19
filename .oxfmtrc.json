@@ -9,6 +9,5 @@
   "experimentalSortImports": {
     "newlinesBetween": false,
     "enabled": true
-  },
-  "ignorePatterns": ["node_modules/", "out/", "*.vsix"]
+  }
 }

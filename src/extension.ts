@@ -5,9 +5,8 @@ import { setTimeout } from 'timers/promises'
 import * as vscode from 'vscode'
 
 export function activate(context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand(
-    'open-project.open',
-    async (args: { cwd: string }) => {
+  context.subscriptions.push(
+    vscode.commands.registerCommand('open-project.open', async (args: { cwd: string }) => {
       if (!args || !args.cwd) {
         vscode.window.showErrorMessage('Open Project: cwd argument is required')
         return
@@ -53,10 +52,8 @@ export function activate(context: vscode.ExtensionContext) {
       } catch (error) {
         vscode.window.showErrorMessage(`Open Project: Error reading directory: ${error}`)
       }
-    },
+    }),
   )
-
-  context.subscriptions.push(disposable)
 }
 
 export function deactivate() {}
