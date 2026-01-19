@@ -1,6 +1,7 @@
 import * as fs from 'fs/promises'
 import * as os from 'os'
 import * as path from 'path'
+import { setTimeout } from 'timers/promises'
 import * as vscode from 'vscode'
 
 export function activate(context: vscode.ExtensionContext) {
@@ -40,7 +41,14 @@ export function activate(context: vscode.ExtensionContext) {
         })
 
         if (selected) {
-          await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(selected.path))
+          await vscode.commands.executeCommand(
+            'vscode.openFolder',
+            vscode.Uri.file(selected.path),
+            { forceNewWindow: true },
+          )
+
+          await setTimeout(1000)
+          await vscode.commands.executeCommand('workbench.action.mergeAllWindowTabs')
         }
       } catch (error) {
         vscode.window.showErrorMessage(`Open Project: Error reading directory: ${error}`)
